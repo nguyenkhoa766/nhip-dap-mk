@@ -187,16 +187,17 @@ h1, h2, h3, .merriweather { font-family: var(--font-heading); }
 
 .turn-indicator {
     padding: var(--space-4) var(--space-8);
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-6);
     text-align: center;
+    align-self: center;
 }
 .turn-indicator p { font-size: 14px; color: var(--color-text-light); margin-bottom: 4px; }
 .player-name { font-size: 32px; color: #d81b60; }
 
 /* Game States: Choice */
-.game-area { width: 100%; max-width: 400px; }
-.instruction-text { text-align: center; margin-bottom: var(--space-6); font-weight: 400; }
-.choice-buttons { display: flex; gap: var(--space-4); height: 160px; }
+.game-area { width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center; }
+.instruction-text { text-align: center; margin-bottom: var(--space-6); font-weight: 400; width: 100%; }
+.choice-buttons { display: flex; gap: var(--space-4); height: 160px; width: 100%; justify-content: center; }
 .btn-card {
     flex: 1; border: none; border-radius: 20px;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
