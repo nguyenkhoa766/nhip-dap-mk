@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nhịp Đập M&K</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-gradient"></div>
+    <div class="bg-particles" id="particles"></div>
+
+    <!-- Floating Notifications -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- SPLASH SCREEN -->
+    <div id="screen-splash" class="screen active flex-center flex-col">
+        <div class="logo-container heartbeat">
+            <svg class="mk-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- M & K intertwining to form a heart shape abstractly -->
+                <path d="M50 85 C50 85, 20 55, 20 35 C20 20, 35 15, 45 25 L50 30 L55 25 C65 15, 80 20, 80 35 C80 55, 50 85, 50 85 Z" stroke="url(#paint0_linear)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M30 40 L40 25 L50 40" stroke="url(#paint0_linear)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M70 25 L60 40 L70 55 M60 40 L50 40" stroke="url(#paint0_linear)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                    <linearGradient id="paint0_linear" x1="20" y1="15" x2="80" y2="85" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#FF9A9E" />
+                        <stop offset="1" stop-color="#FECFEF" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        <h1 class="splash-title fade-in-up delay-1">Nhịp Đập M&K</h1>
+        <p class="splash-subtitle fade-in-up delay-2">Khoảng cách 0cm</p>
+        <button id="btn-start" class="btn btn-primary fade-in delay-3 mt-8">Bắt Đầu</button>
+    </div>
+
+    <!-- HOME / LEVEL SELECT -->
+    <div id="screen-home" class="screen flex-center flex-col hidden">
+        <h2 class="section-title">Hành Trình Chạm</h2>
+        <p class="section-desc">Hãy để trái tim dẫn lối cho hai bạn ngày hôm nay.</p>
+        
+        <div class="level-cards">
+            <!-- Level 1 -->
+            <div class="level-card glass-panel" data-level="1">
+                <div class="level-icon">🌸</div>
+                <div class="level-info">
+                    <h3>Cấp 1</h3>
+                </div>
+            </div>
+            <!-- Level 2 -->
+            <div class="level-card glass-panel" data-level="2">
+                <div class="level-icon">☕</div>
+                <div class="level-info">
+                    <h3>Cấp 2</h3>
+                </div>
+            </div>
+            <!-- Level 3 -->
+            <div class="level-card glass-panel" data-level="3">
+                <div class="level-icon">🫂</div>
+                <div class="level-info">
+                    <h3>Cấp 3</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME PLAY SCREEN -->
+    <div id="screen-game" class="screen flex-center flex-col hidden">
+        <div class="game-header">
+            <button id="btn-back-home" class="btn-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <div id="current-level-display" class="level-badge">Cấp Độ 1</div>
+            <!-- Hidden counter to trigger surprise -->
+            <div id="turn-counter" style="opacity:0; width:24px; text-align:right">0</div>
+        </div>
+
+        <!-- Player Turn Display -->
+        <div class="turn-indicator glass-panel">
+            <p>Lượt của</p>
+            <h2 id="current-player-name" class="player-name">Khoa</h2>
+        </div>
+
+        <!-- Choice State -->
+        <div id="game-choice" class="game-area active">
+            <h3 class="instruction-text">Hãy chọn một chiếc thẻ</h3>
+            <div class="choice-buttons">
+                <button class="btn-card btn-listen" data-type="listen">
+                    <span class="card-icon">💌</span>
+                    <span class="card-label">Lắng Nghe</span>
+                </button>
+                <button class="btn-card btn-action" data-type="action">
+                    <span class="card-icon">✨</span>
+                    <span class="card-label">Hành Động</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Reveal State (Card Flip) -->
+        <div id="game-reveal" class="game-area hidden">
+            <div class="playing-card">
+                <div class="card-inner">
+                    <!-- Front is what they see first -->
+                    <div class="card-front glass-panel flex-center">
+                        <div class="card-logo">M&K</div>
+                    </div>
+                    <!-- Back is the question -->
+                    <div class="card-back glass-panel flex-center flex-col">
+                        <div class="card-type-badge" id="card-badge">Lắng Nghe</div>
+                        <p id="card-text" class="card-content">Nội dung thẻ sẽ hiện ở đây...</p>
+                        
+                        <div class="card-actions">
+                            <button id="btn-next-turn" class="btn btn-primary btn-sm">Hoàn thành</button>
+                            <!-- Nút Daaa đặc quyền cho Minh -->
+                            <button id="btn-daaa" class="btn btn-secondary btn-sm hidden">Daaaa... (Đổi)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Surprise Triggers (Hidden) -->
+        <button id="dev-trigger-surprise" style="position:absolute; bottom:10px; right:10px; opacity:0; width:30px; height:30px;"></button>
+    </div>
+
+    <!-- SURPRISE SCREEN -->
+    <div id="screen-surprise" class="screen flex-center flex-col hidden glass-overlay">
+        <div class="surprise-box scale-in">
+            <div class="gift-icon heartbeat delay-1">🎁</div>
+            <h2 class="merriweather italic text-highlight fade-in delay-2 mt-4">Điều Đặc Biệt Cho Em...</h2>
+            <p class="fade-in delay-3 mt-4 text-center px-4" id="surprise-text">
+                Minh nhắm mắt lại 10 giây nhé.<br><br>Khoa, đến lúc rồi đó! ❤️
+            </p>
+            <button id="btn-surprise-done" class="btn btn-primary fade-in delay-4 mt-8">Đã Nhận Quà</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="questions.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
