@@ -170,6 +170,9 @@ function handleChoice(type) {
     }, 100);
 
     STATE.turnCount++;
+    
+    // Secret hint for Khoa: when surprise is near, show subtle indicator
+    updateSecretHint();
 }
 
 UI.btnListen.addEventListener('click', () => handleChoice('listen'));
@@ -185,7 +188,7 @@ UI.btnDaaa.addEventListener('click', () => {
 });
 
 function proceedToNextTurn() {
-    // Check Surprise Logic - after some turns on Level 3, trigger surprise
+    // Check Surprise Logic - after 6 turns on Level 3, trigger surprise
     if (STATE.currentLevel === 3 && STATE.turnCount >= 6 && !STATE.surpriseTriggered) {
         triggerSurprise();
         return;
@@ -200,6 +203,23 @@ function proceedToNextTurn() {
         updatePlayerTurnUI();
         resetGameSpace();
     }, 400); // match css transition
+}
+
+// --- SECRET HINT FOR KHOA ---
+function updateSecretHint() {
+    const counter = document.getElementById('turn-counter');
+    counter.textContent = STATE.turnCount;
+    
+    if (STATE.currentLevel === 3 && STATE.turnCount >= 4 && !STATE.surpriseTriggered) {
+        // 2 turns left! Show subtle pulse so Khoa can prepare
+        counter.style.opacity = '0.6';
+        counter.style.color = '#d81b60';
+        counter.style.fontWeight = '700';
+        counter.style.animation = 'heartbeat 1.5s infinite';
+    } else {
+        counter.style.opacity = '0';
+        counter.style.animation = 'none';
+    }
 }
 
 // --- SURPRISE MECHANIC ---
